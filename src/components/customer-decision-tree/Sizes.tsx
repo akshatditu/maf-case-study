@@ -1,4 +1,4 @@
-import { ItemTypes } from "../CustomerDecisionTree";
+import { ItemTypes } from "./CustomerDecisionTree";
 import { useDrag } from "react-dnd";
 
 function Sizes(props: { sizes: any }) {
@@ -27,7 +27,10 @@ const Size = ({ id, name }: { id: string; name: string }) => {
   }));
   return (
     <div ref={drag} className="bg-white text-black px-4 w-52 ">
-      <div className="border border-solid border-black"> {name}</div>
+      <div className="border border-solid border-black text-center">
+        {" "}
+        {name}
+      </div>
     </div>
   );
 };

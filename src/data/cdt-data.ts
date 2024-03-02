@@ -1,4 +1,4 @@
-import { OriginData } from "../components/CustomerDecisionTree";
+import { OriginData } from "../components/customer-decision-tree/CustomerDecisionTree";
 
 export const data: OriginData[] = [
   {

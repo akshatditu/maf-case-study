@@ -46,9 +46,12 @@ export const NodeElement: FC<
       <div
         ref={drag}
         onClick={onClick}
-        className="bg-white text-black px-4 w-52 "
+        className="bg-white text-black px-4 w-52"
       >
-        <div className="border border-solid border-black"> {name}</div>
+        <div className="border border-solid border-black w-full text-center">
+          {" "}
+          {name}
+        </div>
       </div>
       {children && (
         <div className="w-full relative h-6">

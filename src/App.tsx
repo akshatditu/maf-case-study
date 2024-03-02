@@ -1,15 +1,10 @@
 import "./App.css";
-import { componentData } from "./data/cdt-data";
-import CustomerDecisionTree from "../src/components/CustomerDecisionTree";
+import Dashboard from "./components/dashboard/Dashboard";
 
 function App() {
   return (
     <>
-      <CustomerDecisionTree
-        data={componentData.data}
-        root={true}
-        sizes={componentData.sizes}
-      />
+      <Dashboard />
     </>
   );
 }

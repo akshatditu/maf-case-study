@@ -1,9 +1,9 @@
-import { NodeElement } from "./customer-decision-tree/NodeElement";
+import { NodeElement } from "./NodeElement";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { buildTree, buildTreeData, flattenData } from "../utils/utils";
-import Sizes from "./customer-decision-tree/Sizes";
+import { buildTree, buildTreeData, flattenData } from "../../utils/utils";
+import Sizes from "./Sizes";
 
 export enum ItemTypes {
   ORIGIN = "origin",
