@@ -2,8 +2,9 @@ import { NodeElement } from "./NodeElement";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { buildTree, buildTreeData, flattenData } from "../../utils/utils";
+import { buildTree, buildTreeData, flattenData } from "../../utils/data-util";
 import Sizes from "./Sizes";
+import { formatDate } from "../../utils/date-util";
 
 export enum ItemTypes {
   ORIGIN = "origin",
@@ -46,20 +47,16 @@ export default function CustomerDecisionTree(
     const tempTreeData = treeData;
     let tempFlatData = flatData;
     tempFlatData[dragId] = sizes[dragId];
-    console.log(tempFlatData, "new flat data");
     setFlatData(tempFlatData);
     let tempSizes = sizes;
     delete tempSizes[dragId];
-    console.log(tempFlatData, "new sizes");
     setSizes(tempSizes);
     if (tempTreeData[newParentId]) {
       tempTreeData[newParentId].push(dragId);
     } else {
       tempTreeData[newParentId] = [dragId];
     }
-    console.log(tempFlatData, "new tree data");
     setTreeData(tempTreeData);
-    console.log(tempFlatData, "new build data");
     setBuildData(buildTreeData(treeData, flatData, "root"));
   };
 
@@ -92,88 +89,110 @@ export default function CustomerDecisionTree(
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="flex">
-        {buildData.map((d: OriginData, index: number) => (
-          <Node
-            handleDrop={handleDrop}
-            key={d.id}
-            val={d}
-            id={d.id}
-            root={props.root}
-            index={index}
-            expandChild={index === 0}
-            isFirstChild={index === 0}
-            isLastChild={index === data.length - 1}
-          >
-            {d.children &&
-              d.children?.map((brand, index) => {
-                return (
-                  <Node
-                    handleDrop={handleDrop}
-                    pid={d.id}
-                    acceptedType={[ItemTypes.TYPE]}
-                    canDrop={(item) => item.type === ItemTypes.TYPE}
-                    key={brand.id}
-                    val={brand}
-                    id={brand.id}
-                    root={false}
-                    isFirstChild={index === 0}
-                    index={index}
-                    expandChild={true}
-                    isLastChild={
-                      index === (d.children && d.children.length - 1)
-                    }
-                  >
-                    {brand.children &&
-                      !!brand.children.length &&
-                      brand.children?.map((type, index) => (
-                        <Node
-                          handleDrop={handleDrop}
-                          pid={brand.id}
-                          acceptedType={[ItemTypes.SIZE]}
-                          canDrop={(item) => item.type === ItemTypes.SIZE}
-                          key={type.id}
-                          val={type}
-                          id={type.id}
-                          root={false}
-                          isFirstChild={index === 0}
-                          index={index}
-                          expandChild={true}
-                          isLastChild={
-                            index ===
-                            (brand.children && brand.children?.length - 1)
-                          }
-                        >
-                          {type.children &&
-                            !!type.children.length &&
-                            type.children.map((size, index) => (
-                              <Node
-                                handleDrop={handleDrop}
-                                pid={type.id}
-                                key={size.id}
-                                val={size}
-                                id={size.id}
-                                root={false}
-                                index={index}
-                                expandChild={true}
-                                isFirstChild={index === 0}
-                                isLastChild={
-                                  index ===
-                                  (type.children && type.children?.length - 1)
-                                }
-                              />
-                            ))}
-                        </Node>
-                      ))}
-                  </Node>
-                );
-              })}
-          </Node>
-        ))}
+    <>
+      <div className="flex flex-row justify-between my-5">
+        <h1 className="text-3xl	font-bold">Customer Decision Tree</h1>
+        <div className="text-blue-400">
+          Last Refresh: {formatDate(new Date())}
+        </div>
       </div>
-      <Sizes sizes={sizes} />
-    </DndProvider>
+      <div className="ml-auto py-2 bg-gray-300 text-white w-fit text-3xl text-bold px-1 rounded-md mb-6">
+        Formulation : Vol x Val% / Space %
+      </div>
+      <DndProvider backend={HTML5Backend}>
+        <div className="flex max-w-full overflow-x-auto">
+          <div className="flex flex-col h-full justify-between">
+            <div className="text-xl font-semibold	 px-4 text-yellow-500 h-28 mt-5">
+              Origin
+            </div>
+            <div className="text-xl font-semibold	px-4 text-green-500 h-28">
+              Brand
+            </div>
+            <div className="text-xl font-semibold px-4 text-blue-500 h-28">
+              Type
+            </div>
+          </div>
+          {buildData.map((d: OriginData, index: number) => (
+            <Node
+              handleDrop={handleDrop}
+              key={d.id}
+              val={d}
+              id={d.id}
+              root={props.root}
+              index={index}
+              expandChild={index === 0}
+              isFirstChild={index === 0}
+              isLastChild={index === data.length - 1}
+            >
+              {d.children &&
+                d.children?.map((brand, index) => {
+                  return (
+                    <Node
+                      handleDrop={handleDrop}
+                      pid={d.id}
+                      acceptedType={[ItemTypes.TYPE]}
+                      canDrop={(item) => item.type === ItemTypes.TYPE}
+                      key={brand.id}
+                      val={brand}
+                      id={brand.id}
+                      root={false}
+                      isFirstChild={index === 0}
+                      index={index}
+                      expandChild={true}
+                      isLastChild={
+                        index === (d.children && d.children.length - 1)
+                      }
+                    >
+                      {brand.children &&
+                        !!brand.children.length &&
+                        brand.children?.map((type, index) => (
+                          <Node
+                            handleDrop={handleDrop}
+                            pid={brand.id}
+                            acceptedType={[ItemTypes.SIZE]}
+                            canDrop={(item) => item.type === ItemTypes.SIZE}
+                            key={type.id}
+                            val={type}
+                            id={type.id}
+                            root={false}
+                            isFirstChild={index === 0}
+                            index={index}
+                            expandChild={true}
+                            isLastChild={
+                              index ===
+                              (brand.children && brand.children?.length - 1)
+                            }
+                          >
+                            {type.children &&
+                              !!type.children.length &&
+                              type.children.map((size, index) => (
+                                <Node
+                                  handleDrop={handleDrop}
+                                  pid={type.id}
+                                  key={size.id}
+                                  val={size}
+                                  id={size.id}
+                                  root={false}
+                                  index={index}
+                                  expandChild={true}
+                                  isFirstChild={index === 0}
+                                  isLastChild={
+                                    index ===
+                                    (type.children && type.children?.length - 1)
+                                  }
+                                />
+                              ))}
+                          </Node>
+                        ))}
+                    </Node>
+                  );
+                })}
+            </Node>
+          ))}
+        </div>
+        <Sizes sizes={sizes} />
+      </DndProvider>
+    </>
   );
 }
 

@@ -9,7 +9,7 @@ function Dashboard() {
       <SideNav />
       <div className="flex-1">
         <Header />
-        <main className="p-6 overflow-auto">
+        <main className="p-6 overflow-y-auto">
           <CustomerDecisionTree
             data={componentData.data}
             root={true}

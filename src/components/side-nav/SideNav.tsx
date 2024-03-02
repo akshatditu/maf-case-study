@@ -1,6 +1,6 @@
 function SideNav() {
   return (
-    <div className="bg-gray-800 w-56">
+    <div className="bg-gray-800 w-44">
       <div className="flex items-center justify-center h-16 text-white">
         Logo
       </div>
