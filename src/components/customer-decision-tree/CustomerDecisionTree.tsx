@@ -228,9 +228,9 @@ const Node: FC<
   handleDrop,
 }) => {
   const [expand, setExpand] = useState(expandChild);
-  const [collectedProps, drop] = useDrop(() => ({
+  const [, drop] = useDrop(() => ({
     accept: acceptedType ?? "",
-    drop(_item: { id: number; pid: number; type: ItemTypes }, monitor) {
+    drop(_item: { id: number; pid: number; type: ItemTypes }) {
       handleDrop(_item.id, _item.pid, val.id, _item.type);
     },
     canDrop,

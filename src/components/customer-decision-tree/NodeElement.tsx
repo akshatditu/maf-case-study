@@ -26,7 +26,7 @@ export const NodeElement: FC<
   type,
   pid,
 }) => {
-  const [collected, drag, dragPreview] = useDrag(() => ({
+  const [, drag] = useDrag(() => ({
     type: type,
     item: { id, type, pid },
   }));

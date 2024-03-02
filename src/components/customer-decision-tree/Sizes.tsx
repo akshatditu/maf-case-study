@@ -22,7 +22,7 @@ function Sizes(props: { sizes: any }) {
 }
 
 const Size = ({ id, name }: { id: string; name: string }) => {
-  const [collected, drag, dragPreview] = useDrag(() => ({
+  const [, drag] = useDrag(() => ({
     type: ItemTypes.SIZE,
     item: { id, type: ItemTypes.SIZE },
   }));
